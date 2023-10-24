@@ -9,14 +9,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String> toDoList = ["Test", "1", "2"];
-  String content = "";
+  List<String>? toDoList = ["Test", "1", "2"];
+  String? content = "";
 
   late double _height, _width;
-  List<MaterialColor> getColor = [Colors.red,Colors.red,Colors.red];
+  List<MaterialColor>? getColor = [Colors.red, Colors.red, Colors.red];
 
-  List<bool> isColor = [false,false,false];
-
+  List<bool>? isColor = [false, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +24,18 @@ class _HomePageState extends State<HomePage> {
 
     _addItemToList(content) {
       setState(() {
-        toDoList.add(content);
-        isColor.add(false);
-        getColor.add(Colors.red);
+        toDoList!.add(content);
+        isColor!.add(false);
+        getColor!.add(Colors.red);
         content = "";
       });
     }
 
     _deleteItemFromList(index) {
       setState(() {
-        toDoList.removeAt(index);
-        isColor.removeAt(index);
-        getColor.removeAt(index);
+        toDoList!.removeAt(index);
+        isColor!.removeAt(index);
+        getColor!.removeAt(index);
       });
     }
 
@@ -45,17 +44,16 @@ class _HomePageState extends State<HomePage> {
       //To DO
     }
 
-  _doneItemFromList(index){
-    
-      if(isColor[index] == false){
-        getColor[index] = Colors.green;
-        isColor[index] = true;
-      }else{
-        getColor[index] = Colors.red;
-        isColor[index] = false;
+    _doneItemFromList(index) {
+      if (isColor![index] == false) {
+        getColor![index] = Colors.green;
+        isColor![index] = true;
+      } else {
+        getColor![index] = Colors.red;
+        isColor![index] = false;
       }
-   setState(() { });
-  }
+      setState(() {});
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -102,7 +100,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               flex: 70,
               child: ListView.builder(
-                itemCount: toDoList.length,
+                itemCount: toDoList!.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: SizedBox50(
@@ -110,14 +108,21 @@ class _HomePageState extends State<HomePage> {
                         children: [
                           Expanded(
                             flex: 65,
-                            child: Text('${toDoList[index]}'),
+                            child: Text(
+                              '${toDoList![index]}',
+                              style: TextStyle(
+                                decoration: isColor![index]==true ? TextDecoration.lineThrough : null,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                           Expanded(
                             flex: 10,
                             child: TextButton(
                               onPressed: () => _doneItemFromList(index),
                               child: Icon(Icons.done_all_rounded,
-                                  color: getColor[index]),
+                                  color: getColor![index]),
                             ),
                           ),
                           Expanded(
@@ -150,7 +155,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  
-
 }
