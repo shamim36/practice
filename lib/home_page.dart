@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:practice/editList.dart';
 import 'package:practice/style.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -9,13 +11,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<String>? toDoList = ["Test", "1", "2"];
+  List<String>? toDoList = ["Test"];
+  List<dynamic>? date = [
+    DateFormat('HH:mm:ss | dd-MM-yy').format(DateTime.now())
+  ];
   String? content = "";
 
   late double _height, _width;
-  List<MaterialColor>? getColor = [Colors.red, Colors.red, Colors.red];
+  List<MaterialColor>? getColor = [Colors.red];
 
-  List<bool>? isColor = [false, false, false];
+  List<bool>? isColor = [false];
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +32,7 @@ class _HomePageState extends State<HomePage> {
         toDoList!.add(content);
         isColor!.add(false);
         getColor!.add(Colors.red);
+        date!.add(DateFormat('HH:mm:ss | dd-MM-yy').format(DateTime.now()));
         content = "";
       });
     }
@@ -40,8 +46,35 @@ class _HomePageState extends State<HomePage> {
     }
 
     _editItemFromList(index) {
-      String changeContent = "";
-      //To DO
+      TextEditingController textEditingController = TextEditingController();
+
+      return showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Edit List!'),
+              content: TextField(
+                controller: textEditingController,
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    setState(() {});
+                  },
+                ),
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    toDoList![index] = textEditingController.text;
+                    Navigator.of(context).pop();
+                    setState(() {});
+                  },
+                ),
+              ],
+            );
+          });
     }
 
     _doneItemFromList(index) {
@@ -109,9 +142,11 @@ class _HomePageState extends State<HomePage> {
                           Expanded(
                             flex: 65,
                             child: Text(
-                              '${toDoList![index]}',
+                              '${toDoList![index]}\n${date![index]}',
                               style: TextStyle(
-                                decoration: isColor![index]==true ? TextDecoration.lineThrough : null,
+                                decoration: isColor![index] == true
+                                    ? TextDecoration.lineThrough
+                                    : null,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                               ),

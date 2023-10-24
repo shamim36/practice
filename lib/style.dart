@@ -23,7 +23,7 @@ ButtonStyle appButtonStyle() {
 
 SizedBox SizedBox50(child) {
   return SizedBox(
-    height: 50,
+    height: 100,
     width: double.infinity,
     child: Container(
       padding: const EdgeInsets.all(5),
